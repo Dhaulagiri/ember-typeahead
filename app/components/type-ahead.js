@@ -1,0 +1,1 @@
+export { default } from 'ember-typeahead/components/type-ahead';
