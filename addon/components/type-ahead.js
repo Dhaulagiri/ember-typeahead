@@ -50,7 +50,24 @@ export default Ember.TextField.extend({
             }
           }
         ]
-      });
+      })
+      .on('tokenfield:createtoken',
+        run.bind(this, (event) => {
+          // remove the token from the list
+          const tokenContent = this.get('tokenContent');
+          const token = tokenContent.findBy('value', event.attrs.value);
+          tokenContent.removeObject(token);
+        })
+      ).on('tokenfield:removetoken',
+        run.bind(this, (event) => {
+          // add the token back to the list
+          let tokenContent = this.get('tokenContent');
+          const token = { value: event.attrs.value };
+          tokenContent.addObject(token);
+          tokenContent = tokenContent.sortBy('value');
+          this.set('tokenContent', tokenContent);
+        })
+      );
     } else {
       this.$().typeahead(
         {},
