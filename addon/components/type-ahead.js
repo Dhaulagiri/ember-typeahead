@@ -184,6 +184,9 @@ export default Ember.TextField.extend({
       object.value = item[valueToken];
       tokenContent.push(object);
     });
-    return tokenContent;
+
+    // filter out any items that have already been selected and return that
+    const selectedTokens = this.$().tokenfield('getTokensList');
+    return tokenContent.reject((object) => selectedTokens.indexOf(object.value) > -1);
   })
 });
