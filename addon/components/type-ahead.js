@@ -134,7 +134,7 @@ export default Ember.TextField.extend({
       if ($suggestions.length === 1) { // when there is only ONE option
         $suggestions.first().click(); // trigger SELECTING that option
       } else {
-        this.sendAction('on-select-without-match', this, this.$().val());
+        this.sendAction('onSelectWithoutMatchAction', this, this.$().val());
       }
     }
   },
@@ -146,7 +146,7 @@ export default Ember.TextField.extend({
       if (results.length) {
         this.set('selection', results[0]);
       } else {
-        this.sendAction('on-select-without-match', this, query);
+        this.sendAction('onSelectWithoutMatchAction', this, query);
       }
     }
   },
