@@ -121,8 +121,10 @@ export default Ember.TextField.extend({
 
   willDestroyElement() {
     if (this.get('tokenized')) {
+      this.$().off('tokenfield:createtoken tokenfield:removetoken');
       this.$().tokenfield('destroy');
     } else {
+      this.$().off('typeahead:selected typeahead:autocompleted');
       this.$().typeahead('destroy');
     }
   },
