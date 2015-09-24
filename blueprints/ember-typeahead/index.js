@@ -8,7 +8,7 @@ module.exports = {
     var packages = [
       { name: 'typeahead.js', target: '~0.10.5' },
       { name: 'bootstrap-tokenfield', target: '~0.12.1' },
-      { name: 'handlebars', target: '~4.0.2' }
+      { name: 'handlebars', target: '~3.0.3' }
     ];
     return this.addBowerPackagesToProject(packages);
   }
