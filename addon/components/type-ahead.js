@@ -102,11 +102,11 @@ export default Ember.TextField.extend({
             })
           }
         }
-      ).on('typeahead:selected typeahead:autocompleted',
+      ).on('typeahead:select typeahead:autocomplete',
         run.bind(this, (e, obj) => {
           this.set('selection', obj);
         })
-      ).on('typeahead:selected',
+      ).on('typeahead:select',
         run.bind(this, (e, obj) => {
           this.set('selection', obj);
 
@@ -124,15 +124,15 @@ export default Ember.TextField.extend({
       this.$().off('tokenfield:createtoken tokenfield:removetoken');
       this.$().tokenfield('destroy');
     } else {
-      this.$().off('typeahead:selected typeahead:autocompleted');
-      this.$().off('typeahead:selected');
+      this.$().off('typeahead:select typeahead:autocomplete');
+      this.$().off('typeahead:select');
       this.$().typeahead('destroy');
     }
   },
 
   keyUp(event) {
     if (this.get('selectOnEnter') === true && event.which === 13){ // on RETURN key
-      const $dropdownMenu = this.$().siblings('.tt-dropdown-menu');
+      const $dropdownMenu = this.$().siblings('.tt-menu');
       const $suggestions = $dropdownMenu.find('.tt-suggestion:not(.enter-suggest)');
       if ($suggestions.length === 1) { // when there is only ONE option
         $suggestions.first().click(); // trigger SELECTING that option
