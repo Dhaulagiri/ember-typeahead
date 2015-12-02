@@ -9,7 +9,7 @@ const {
 
 export default Ember.TextField.extend({
   classNames: ['form-control'],
-
+  limit: 5,
   didInsertElement() {
 
     Ember.assert('typeahead.js has to be loaded', typeof this.$().typeahead === 'function');
@@ -22,13 +22,14 @@ export default Ember.TextField.extend({
           {},
           {
             minLength: 0,
+            limit: this.get('limit'),
             displayKey: 'value',
             source: run.bind(this, (query, cb) => {
               const content = this.get('tokenContent');
               if (!query || query === '*') {
                 return cb(content);
               }
-              cb(this._filterContentToken(query));
+              cb(this._filterContent(query, 'value', this.get('tokenContent')));
             }),
             templates: {
               suggestion: Handlebars.compile(this.get('suggestionTemplate')),
@@ -73,6 +74,7 @@ export default Ember.TextField.extend({
         {},
         {
           minLength: 0,
+          limit: this.get('limit'),
           displayKey: run.bind(this, (object) => {
             return get(object, this.get('displayKey'));
           }),
@@ -81,7 +83,7 @@ export default Ember.TextField.extend({
             if (!query || query === '*') {
               return cb(content);
             }
-            cb(this._filterContent(query));
+            cb(this._filterContent(query, this.get('valueToken'), this.get('content')));
           }),
           templates: {
             suggestion: Handlebars.compile(this.get('suggestionTemplate')),
@@ -134,44 +136,35 @@ export default Ember.TextField.extend({
     if (this.get('selectOnEnter') === true && event.which === 13){ // on RETURN key
       const $dropdownMenu = this.$().siblings('.tt-menu');
       const $suggestions = $dropdownMenu.find('.tt-suggestion:not(.enter-suggest)');
-      if ($suggestions.length === 1) { // when there is only ONE option
-        $suggestions.first().click(); // trigger SELECTING that option
-      } else {
-        this.sendAction('onSelectWithoutMatchAction', this, this.$().val());
-      }
+      $suggestions.first().click(); // trigger SELECTING that option
     }
   },
 
   focusOut() {
     const query = this.$().typeahead('val');
-    const results = this._filterContent(query);
+    const results = this._filterContent(query, this.get('valueToken'), this.get('content'));
     if ($.trim(query).length) {
-      if (results.length) {
-        this.set('selection', results[0]);
-      } else {
-        this.sendAction('onSelectWithoutMatchAction', this, query);
-      }
+      this.set('selection', results[0]);
     }
   },
 
-  close: function() {
+  close() {
     this.$().typeahead('close');
   },
 
-  _filterContent(query) {
-    const regex = new RegExp(query, 'i');
-    const valueKey = this.get('valueToken');
-    return this.get('content').filter((thing) => {
-      return regex.test(Ember.get(thing, valueKey));
-    });
-  },
+  _filterContent(query, valueKey, content) {
+    const exactRegex = new RegExp(`^${query}$`, 'i');
+    const fuzzyRegex = new RegExp(query, 'i');
 
-  _filterContentToken(query) {
-    const regex = new RegExp(query, 'i');
-    const valueKey = 'value';
-    return this.get('tokenContent').filter((thing) => {
-      return regex.test(Ember.get(thing, valueKey));
+    const exactMatches = content.filter((thing) => {
+      return exactRegex.test(Ember.get(thing, valueKey));
     });
+
+    const fuzzyMatches =  content.filter((thing) => {
+      return fuzzyRegex.test(Ember.get(thing, valueKey));
+    });
+
+    return exactMatches.concat(fuzzyMatches.removeObject(exactMatches[0]));
   },
 
   // Massage the content of typeahead into a format

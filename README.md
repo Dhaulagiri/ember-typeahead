@@ -19,8 +19,8 @@ The default usage of the `type-ahead` component gives the consumer a typeahead.j
     selectOnEnter=true
     suggestionTemplate=suggestionTemplate
     emptyTemplate=emptyTemplate
-    onSelectAction="ActionToRunOnSelect"
-    onSelectWithoutMatchAction="ActionToRunWhenEnterIsHitWithoutAMatch"}}
+    limit=numberofresultstodisplay
+    onSelectAction="ActionToRunOnSelect"}}
 ```
 
 ### Tokenized
@@ -40,7 +40,7 @@ Switching the typeahead from a typeahead.js function to a Tokenfield for Bootstr
     suggestionTemplate=suggestionTemplate
     emptyTemplate=emptyTemplate}}
 ```
-              
+
 ## Installation
 
 * `git clone` this repository
@@ -54,6 +54,6 @@ Switching the typeahead from a typeahead.js function to a Tokenfield for Bootstr
 
 ## Further Reading / Useful Links
 
-* The typeahead.js component is based heavily on the [ember-cli-twitter-typeahead](https://github.com/thefrontside/ember-cli-twitter-typeahead) addon
+* The typeahead.js component is based heavily on the [ember-cli-twitter-typeahead](https://github.com/Dhaulagiri/ember-cli-twitter-typeahead) addon
 * [Tokenfield for Boostrap](http://sliptree.github.io/bootstrap-tokenfield/)
 * [typeahead.js](https://twitter.github.io/typeahead.js/)
