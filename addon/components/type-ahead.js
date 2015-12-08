@@ -113,7 +113,7 @@ export default Ember.TextField.extend({
           this.set('selection', obj);
 
           let name = this.get('selection.name');
-          if (name) {
+          if (name && !this.get('selection.isDisabled')) {
             this.sendAction('onSelectAction', name);
           }
         })
