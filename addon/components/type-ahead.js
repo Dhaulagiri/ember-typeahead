@@ -112,9 +112,10 @@ export default Ember.TextField.extend({
         run.bind(this, (e, obj) => {
           this.set('selection', obj);
 
-          let name = this.get('selection.name');
-          if (name) {
-            this.sendAction('onSelectAction', name);
+          let valueToken = this.get('valueToken');
+          let value = this.get(`selection.${valueToken}`);
+          if (value) {
+            this.sendAction('onSelectAction', value);
           }
         })
       );
