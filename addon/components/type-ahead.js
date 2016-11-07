@@ -32,21 +32,21 @@ export default Ember.TextField.extend({
               cb(this._filterContent(query, 'value', this.get('tokenContent')));
             }),
             templates: {
-              suggestion: Handlebars.compile(this.get('suggestionTemplate')),
+              suggestion: this.get('suggestionTemplate'),
               footer: run.bind(this, (object) => {
                 var footerTemplate = this.get('footerTemplate');
                 var emptyFooterTemplate = this.get('emptyFooterTemplate');
 
                 if (object.isEmpty && emptyFooterTemplate) {
-                  return Handlebars.compile(emptyFooterTemplate);
+                  return emptyFooterTemplate;
                 }
 
                 if (footerTemplate) {
-                  return Handlebars.compile(footerTemplate);
+                  return footerTemplate;
                 }
               }),
               empty: run.bind(this, () => {
-                return Handlebars.compile(this.get('emptyTemplate'));
+                return this.get('emptyTemplate');
               })
             }
           }
@@ -86,21 +86,21 @@ export default Ember.TextField.extend({
             cb(this._filterContent(query, this.get('valueToken'), this.get('content')));
           }),
           templates: {
-            suggestion: Handlebars.compile(this.get('suggestionTemplate')),
+            suggestion: this.get('suggestionTemplate'),
             footer: run.bind(this, (object) => {
               var footerTemplate = this.get('footerTemplate');
               var emptyFooterTemplate = this.get('emptyFooterTemplate');
 
               if (object.isEmpty && emptyFooterTemplate) {
-                return Handlebars.compile(emptyFooterTemplate);
+                return emptyFooterTemplate;
               }
 
               if (footerTemplate) {
-                return Handlebars.compile(footerTemplate);
+                return footerTemplate;
               }
             }),
             empty: run.bind(this, () => {
-              return Handlebars.compile(this.get('emptyTemplate'));
+              return this.get('emptyTemplate');
             })
           }
         }
@@ -161,9 +161,9 @@ export default Ember.TextField.extend({
       return exactRegex.test(Ember.get(thing, valueKey));
     });
 
-    const fuzzyMatches =  content.filter((thing) => {
+    const fuzzyMatches =  Ember.A(content.filter((thing) => {
       return fuzzyRegex.test(Ember.get(thing, valueKey));
-    });
+    }));
 
     return exactMatches.concat(fuzzyMatches.removeObject(exactMatches[0]));
   },
