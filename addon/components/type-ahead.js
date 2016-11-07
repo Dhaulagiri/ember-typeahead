@@ -7,6 +7,18 @@ const {
   run
 } = Ember;
 
+function compile(stringOrFunction) {
+  if (typeof stringOrFunction === 'function') {
+    return stringOrFunction;
+  }
+
+  if (typeof Handlebars !== 'undefined') {
+    return Handlebars.compile(stringOrFunction);
+  }
+
+  return stringOrFunction;
+}
+
 export default Ember.TextField.extend({
   classNames: ['form-control'],
   limit: 5,
@@ -32,21 +44,21 @@ export default Ember.TextField.extend({
               cb(this._filterContent(query, 'value', this.get('tokenContent')));
             }),
             templates: {
-              suggestion: Handlebars.compile(this.get('suggestionTemplate')),
+              suggestion: compile(this.get('suggestionTemplate')),
               footer: run.bind(this, (object) => {
                 var footerTemplate = this.get('footerTemplate');
                 var emptyFooterTemplate = this.get('emptyFooterTemplate');
 
                 if (object.isEmpty && emptyFooterTemplate) {
-                  return Handlebars.compile(emptyFooterTemplate);
+                  return compile(emptyFooterTemplate);
                 }
 
                 if (footerTemplate) {
-                  return Handlebars.compile(footerTemplate);
+                  return compile(footerTemplate);
                 }
               }),
               empty: run.bind(this, () => {
-                return Handlebars.compile(this.get('emptyTemplate'));
+                return compile(this.get('emptyTemplate'));
               })
             }
           }
@@ -86,21 +98,21 @@ export default Ember.TextField.extend({
             cb(this._filterContent(query, this.get('valueToken'), this.get('content')));
           }),
           templates: {
-            suggestion: Handlebars.compile(this.get('suggestionTemplate')),
+            suggestion: compile(this.get('suggestionTemplate')),
             footer: run.bind(this, (object) => {
               var footerTemplate = this.get('footerTemplate');
               var emptyFooterTemplate = this.get('emptyFooterTemplate');
 
               if (object.isEmpty && emptyFooterTemplate) {
-                return Handlebars.compile(emptyFooterTemplate);
+                return compile(emptyFooterTemplate);
               }
 
               if (footerTemplate) {
-                return Handlebars.compile(footerTemplate);
+                return compile(footerTemplate);
               }
             }),
             empty: run.bind(this, () => {
-              return Handlebars.compile(this.get('emptyTemplate'));
+              return compile(this.get('emptyTemplate'));
             })
           }
         }
@@ -161,9 +173,9 @@ export default Ember.TextField.extend({
       return exactRegex.test(Ember.get(thing, valueKey));
     });
 
-    const fuzzyMatches =  content.filter((thing) => {
+    const fuzzyMatches =  Ember.A(content.filter((thing) => {
       return fuzzyRegex.test(Ember.get(thing, valueKey));
-    });
+    }));
 
     return exactMatches.concat(fuzzyMatches.removeObject(exactMatches[0]));
   },
