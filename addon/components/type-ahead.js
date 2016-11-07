@@ -7,18 +7,6 @@ const {
   run
 } = Ember;
 
-function compile(stringOrFunction) {
-  if (typeof stringOrFunction === 'function') {
-    return stringOrFunction;
-  }
-
-  if (typeof Handlebars !== 'undefined') {
-    return Handlebars.compile(stringOrFunction);
-  }
-
-  return stringOrFunction;
-}
-
 export default Ember.TextField.extend({
   classNames: ['form-control'],
   limit: 5,
@@ -44,21 +32,21 @@ export default Ember.TextField.extend({
               cb(this._filterContent(query, 'value', this.get('tokenContent')));
             }),
             templates: {
-              suggestion: compile(this.get('suggestionTemplate')),
+              suggestion: this.get('suggestionTemplate'),
               footer: run.bind(this, (object) => {
                 var footerTemplate = this.get('footerTemplate');
                 var emptyFooterTemplate = this.get('emptyFooterTemplate');
 
                 if (object.isEmpty && emptyFooterTemplate) {
-                  return compile(emptyFooterTemplate);
+                  return emptyFooterTemplate;
                 }
 
                 if (footerTemplate) {
-                  return compile(footerTemplate);
+                  return footerTemplate;
                 }
               }),
               empty: run.bind(this, () => {
-                return compile(this.get('emptyTemplate'));
+                return this.get('emptyTemplate');
               })
             }
           }
@@ -98,21 +86,21 @@ export default Ember.TextField.extend({
             cb(this._filterContent(query, this.get('valueToken'), this.get('content')));
           }),
           templates: {
-            suggestion: compile(this.get('suggestionTemplate')),
+            suggestion: this.get('suggestionTemplate'),
             footer: run.bind(this, (object) => {
               var footerTemplate = this.get('footerTemplate');
               var emptyFooterTemplate = this.get('emptyFooterTemplate');
 
               if (object.isEmpty && emptyFooterTemplate) {
-                return compile(emptyFooterTemplate);
+                return emptyFooterTemplate;
               }
 
               if (footerTemplate) {
-                return compile(footerTemplate);
+                return footerTemplate;
               }
             }),
             empty: run.bind(this, () => {
-              return compile(this.get('emptyTemplate'));
+              return this.get('emptyTemplate');
             })
           }
         }
