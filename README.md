@@ -43,17 +43,26 @@ Switching the typeahead from a typeahead.js function to a Tokenfield for Bootstr
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+* `git clone https://github.com/dhaulagiri/ember-typeahead` this repository
+* `cd ember-typeahead`
+* `yarn`
 
 ## Running
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+* `ember serve`
+* Visit your app at [http://localhost:4200](http://localhost:4200).
 
 ## Further Reading / Useful Links
 
 * The typeahead.js component is based heavily on the [ember-cli-twitter-typeahead](https://github.com/Dhaulagiri/ember-cli-twitter-typeahead) addon
 * [Tokenfield for Boostrap](http://sliptree.github.io/bootstrap-tokenfield/)
 * [typeahead.js](https://twitter.github.io/typeahead.js/)
+* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
+* `ember test`
+* `ember test --server`
+
+## Building
+
+* `ember build`
+
+For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
