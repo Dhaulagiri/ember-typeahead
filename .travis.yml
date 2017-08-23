@@ -32,6 +32,8 @@ before_install:
   - phantomjs --version
 
 install:
+  - yarn add global bower
+  - bower install
   - yarn install --no-lockfile --non-interactive
 
 script:
