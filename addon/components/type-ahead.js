@@ -1,21 +1,19 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { assert } from '@ember/debug';
+import TextField from '@ember/component/text-field';
+import $ from 'jquery';
+import { get, computed } from '@ember/object';
+import { run } from '@ember/runloop';
 
-const {
-  $,
-  computed,
-  get,
-  run
-} = Ember;
-
-export default Ember.TextField.extend({
+export default TextField.extend({
   classNames: ['form-control'],
   limit: 5,
   didInsertElement() {
 
-    Ember.assert('typeahead.js has to be loaded', typeof this.$().typeahead === 'function');
+    assert('typeahead.js has to be loaded', typeof this.$().typeahead === 'function');
 
     if (this.get('tokenized')) {
-      Ember.assert('bootstrap-tokenfield has to be loaded', typeof this.$().tokenfield === 'function');
+      assert('bootstrap-tokenfield has to be loaded', typeof this.$().tokenfield === 'function');
 
       this.$().tokenfield({
         typeahead: [
@@ -158,11 +156,11 @@ export default Ember.TextField.extend({
     const fuzzyRegex = new RegExp(query, 'i');
 
     const exactMatches = content.filter((thing) => {
-      return exactRegex.test(Ember.get(thing, valueKey));
+      return exactRegex.test(get(thing, valueKey));
     });
 
-    const fuzzyMatches =  Ember.A(content.filter((thing) => {
-      return fuzzyRegex.test(Ember.get(thing, valueKey));
+    const fuzzyMatches =  A(content.filter((thing) => {
+      return fuzzyRegex.test(get(thing, valueKey));
     }));
 
     return exactMatches.concat(fuzzyMatches.removeObject(exactMatches[0]));
